@@ -1,0 +1,23 @@
+{% extends 'base.html.twig'%}
+
+{% form_theme formulaire 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Creation user{% endblock %}
+
+{% block body %}
+
+   <div class="container">
+        <div class="row">
+            <div class=" col-md-5">
+            {{form_start(formulaire)}}
+                {{form_row(formulaire.email)}}
+                {{form_row(formulaire.password)}}
+                <div class="col-md-12 " style="text-align:right">
+                    <button class="btn btn-primary">{{button_label|default('Sauve') }}</button><br>
+               </div>
+            {{form_end(formulaire)}}
+            </div>
+        </div>
+   </div>
+
+{% endblock %}
