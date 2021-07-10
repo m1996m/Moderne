@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Hospilisation{% endblock %}
+
+{% block body %}
+    <h1>Edit Hospilisation</h1>
+
+    {{ include('hospilisation/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('hospilisation_index') }}">back to list</a>
+
+    {{ include('hospilisation/_delete_form.html.twig') }}
+{% endblock %}

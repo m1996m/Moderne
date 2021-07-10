@@ -14,6 +14,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method User|null findOneBy(array $criteria, array $orderBy = null)
+ * @method User[]    userSpecialite($specialite)
+ * @method User[]    mesPatients(User $medecin, User $patient)
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
@@ -64,4 +67,40 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
+    //Permet d'affichier les medecins en fonction des specialites passer en paramette
+    public function userSpecialite(string $specialite): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+           'SELECT u.nom,u.prenom
+            FROM App\Entity\User u
+            WHERE u.specialite = :specialite
+            ORDER BY u.id ASC'
+        )->setParameter('specialite', $specialite);
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+
+    //Les patients d'un docteur partieculier
+
+    public function mesPatients(User $medecin, User $patient): array
+    {
+        // automatically knows to select Products
+        // the "p" is an alias you'll use in the rest of the query
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.medecin = :medecin')
+            ->andwhere('patient= :patient')
+            ->setParameter('medecin', $medecin)
+            ->setParameters(array('medecin'=> $medecin, 'patient' => $patient))
+            ->orderBy('p.id', 'ASC');
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+
+        // to get just one result:
+        // $product = $query->setMaxResults(1)->getOneOrNullResult();
+    }
 }

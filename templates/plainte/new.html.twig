@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Plainte{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-md-10"> <h1 style="text-align:center;">Ajout plainte</h1></div>
+        <div class="col-md-offset-1 col-md-10 col-md-offset-1">
+            <button  class="btn btn-primary"><a style="color:white" href="{{path('plainte_index')}}">Liste des plaintes</a></button>
+            <div class="card">
+                {{ form_start(form) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.designation) }}
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                        </div>
+                        <div class="col-lg-4">
+                            <button  class="btn btn-primary"><a style="color:white" href="{{path('plainte_new')}}">Precedent</a></button>
+                        </div>
+                        <div class="col-lg-4">
+                            <button  class="btn btn-primary"><a style="color:white" href="{{path('consultation_index')}}">Mes consultations</a></button>
+                        </div> 
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

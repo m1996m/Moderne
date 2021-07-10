@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeConsultation index{% endblock %}
+
+{% block body %}
+    <h1>TypeConsultation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Designation</th>
+                <th>Prix</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for type_consultation in type_consultations %}
+            <tr>
+                <td>{{ type_consultation.id }}</td>
+                <td>{{ type_consultation.designation }}</td>
+                <td>{{ type_consultation.prix }}</td>
+                <td>
+                    <a href="{{ path('type_consultation_show', {'id': type_consultation.id}) }}">show</a>
+                    <a href="{{ path('type_consultation_edit', {'id': type_consultation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('type_consultation_new') }}">Create new</a>
+{% endblock %}

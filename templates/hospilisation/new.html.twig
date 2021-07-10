@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Hospilisation{% endblock %}
+
+{% block body %}
+    <h1>Create new Hospilisation</h1>
+
+    {{ include('hospilisation/_form.html.twig') }}
+
+    <a href="{{ path('hospilisation_index') }}">back to list</a>
+{% endblock %}

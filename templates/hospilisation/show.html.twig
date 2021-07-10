@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hospilisation{% endblock %}
+
+{% block body %}
+    <h1>Hospilisation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ hospilisation.id }}</td>
+            </tr>
+            <tr>
+                <th>DateAdmission</th>
+                <td>{{ hospilisation.dateAdmission ? hospilisation.dateAdmission|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>MotifAdmission</th>
+                <td>{{ hospilisation.motifAdmission }}</td>
+            </tr>
+            <tr>
+                <th>NomAccompagnant</th>
+                <td>{{ hospilisation.nomAccompagnant }}</td>
+            </tr>
+            <tr>
+                <th>Lien</th>
+                <td>{{ hospilisation.lien }}</td>
+            </tr>
+            <tr>
+                <th>DateSortie</th>
+                <td>{{ hospilisation.dateSortie ? hospilisation.dateSortie|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ hospilisation.statut }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('hospilisation_index') }}">back to list</a>
+
+    <a href="{{ path('hospilisation_edit', {'id': hospilisation.id}) }}">edit</a>
+
+    {{ include('hospilisation/_delete_form.html.twig') }}
+{% endblock %}

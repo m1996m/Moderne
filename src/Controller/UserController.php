@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\FileUploadType;
+use App\Form\UsereditType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +20,7 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $repos): Response
     {
-        $user=$repos->findAll();
+        $user=$repos->userSpecialite('65');
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserController',
             'users'=>$user
@@ -41,7 +44,7 @@ class UserController extends AbstractController
         
         return $this->render('user/create.html.twig', [
             'user' => $user,
-            'formulaire'=>$form->createView()
+            'form'=>$form->createView()
         ]);
     }
 
@@ -50,15 +53,14 @@ class UserController extends AbstractController
      */
     public function edit(Request $request,User $user): Response
     {
-
-        $form=$this->createForm(UserType::class,$user);
+        $form=$this->createForm(UsereditType::class,$user);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $om=$this->getDoctrine()->getManager();
             $om->flush();
             return $this->redirectToRoute('user');
         }
-        return $this->render('user/create.html.twig', [
+        return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form'=>$form->createView()
         ]);
@@ -86,5 +88,38 @@ class UserController extends AbstractController
         return $this->redirectToRoute('user');
 
     }
+     /**
+   * @Route("/upload/upload/{id}", name="app_test_upload")
+   */
+  public function upload(Request $request, FileUploader $file_uploader, User $user)
+  {
+    $form = $this->createForm(FileUploadType::class);
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) 
+    {
+      $file = $form['image']->getData();
+      if ($file) 
+      {
+        $file_name = $file_uploader->upload($file);
+        if (null !== $file_name) // for example
+        {
+          $directory = $file_uploader->getTargetDirectory();
+          $full_path = $directory.'/'.$file_name;
+          $user->setImage('image/'.$file_name);
+          // Do what you want with the full path file...
+          // Why not read the content or parse it !!!
+         $om=$this->getDoctrine()->getManager();
+          $om->flush();
+        }
+        else
+        {
+          // Oups, an error occured !!!
+        }
+      }
+    }
+    return $this->render('upload/upload.html.twig', [
+      'form' => $form->createView(),
+    ]);
+  }
 
 }

@@ -6,13 +6,15 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Mapping\Annotation\Slug;
+use PhpParser\Node\Expr\Cast\String_;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -28,6 +30,8 @@ class User implements UserInterface
      */
     private $email;
 
+    public $confirmation;
+
     /**
      * @ORM\Column(type="json")
      */
@@ -37,23 +41,88 @@ class User implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
+
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity=Personnel::class, mappedBy="user")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $personnels;
+    private $nom;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $isVerified = false;
+    private $prenom;
 
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $tel;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Specialite::class, inversedBy="users")
+     */
+    private $specialite;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="users")
+     */
+    private $service;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $assurance;
+
+    /**
+     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="patient")
+     */
+    private $rendezVouses;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Consultation::class, mappedBy="patient")
+     */
+    private $consultations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Traitement::class, mappedBy="patient")
+     */
+    private $traitements;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CreatedAt::class, mappedBy="patient")
+     */
+    private $createdAts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Hospilisation::class, mappedBy="medecin")
+     */
+    private $hospilisations;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @var string
+     * @Gedmo\Slug(fields={"nom","tel"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     public function __construct()
     {
-        $this->personnels = new ArrayCollection();
-        $this->essais = new ArrayCollection();
+        $this->rendezVouses = new ArrayCollection();
+        $this->consultations = new ArrayCollection();
+        $this->traitements = new ArrayCollection();
+        $this->createdAts = new ArrayCollection();
+        $this->hospilisations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -107,7 +176,12 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
+    }
+
+    public function getConfirmation(): ?string
+    {
+        return $this->confirmation;
     }
 
     public function setPassword(string $password): self
@@ -137,51 +211,280 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection|Personnel[]
-     */
-    public function getPersonnels(): Collection
+    public function getNom(): ?string
     {
-        return $this->personnels;
+        return $this->nom;
     }
 
-    public function addPersonnel(Personnel $personnel): self
+
+    public function setNom(string $nom): self
     {
-        if (!$this->personnels->contains($personnel)) {
-            $this->personnels[] = $personnel;
-            $personnel->setUser($this);
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getTel(): ?string
+    {
+        return $this->tel;
+    }
+
+    public function setTel(string $tel): self
+    {
+        $this->tel = $tel;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getSpecialite(): ?Specialite
+    {
+        return $this->specialite;
+    }
+
+    public function setSpecialite(?Specialite $specialite): self
+    {
+        $this->specialite = $specialite;
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): self
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    public function getAssurance(): ?string
+    {
+        return $this->assurance;
+    }
+
+    public function setAssurance(?string $assurance): self
+    {
+        $this->assurance = $assurance;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RendezVous[]
+     */
+    public function getRendezVouses(): Collection
+    {
+        return $this->rendezVouses;
+    }
+
+    public function addRendezVouse(RendezVous $rendezVouse): self
+    {
+        if (!$this->rendezVouses->contains($rendezVouse)) {
+            $this->rendezVouses[] = $rendezVouse;
+            $rendezVouse->setPatient($this);
         }
 
         return $this;
     }
 
-    public function removePersonnel(Personnel $personnel): self
+    public function removeRendezVouse(RendezVous $rendezVouse): self
     {
-        if ($this->personnels->removeElement($personnel)) {
+        if ($this->rendezVouses->removeElement($rendezVouse)) {
             // set the owning side to null (unless already changed)
-            if ($personnel->getUser() === $this) {
-                $personnel->setUser(null);
+            if ($rendezVouse->getPatient() === $this) {
+                $rendezVouse->setPatient(null);
             }
         }
 
         return $this;
     }
 
-    public function isVerified(): bool
+    /**
+     * @return Collection|Consultation[]
+     */
+    public function getConsultations(): Collection
     {
-        return $this->isVerified;
+        return $this->consultations;
     }
 
-    public function setIsVerified(bool $isVerified): self
+    public function addConsultation(Consultation $consultation): self
     {
-        $this->isVerified = $isVerified;
+        if (!$this->consultations->contains($consultation)) {
+            $this->consultations[] = $consultation;
+            $consultation->setPatient($this);
+        }
 
         return $this;
     }
-    public function __toString()
+
+    public function removeConsultation(Consultation $consultation): self
+    {
+        if ($this->consultations->removeElement($consultation)) {
+            // set the owning side to null (unless already changed)
+            if ($consultation->getPatient() === $this) {
+                $consultation->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Traitement[]
+     */
+    public function getTraitements(): Collection
+    {
+        return $this->traitements;
+    }
+
+    public function addTraitement(Traitement $traitement): self
+    {
+        if (!$this->traitements->contains($traitement)) {
+            $this->traitements[] = $traitement;
+            $traitement->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTraitement(Traitement $traitement): self
+    {
+        if ($this->traitements->removeElement($traitement)) {
+            // set the owning side to null (unless already changed)
+            if ($traitement->getPatient() === $this) {
+                $traitement->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CreatedAt[]
+     */
+    public function getCreatedAts(): Collection
+    {
+        return $this->createdAts;
+    }
+
+    public function addCreatedAt(CreatedAt $createdAt): self
+    {
+        if (!$this->createdAts->contains($createdAt)) {
+            $this->createdAts[] = $createdAt;
+            $createdAt->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreatedAt(CreatedAt $createdAt): self
+    {
+        if ($this->createdAts->removeElement($createdAt)) {
+            // set the owning side to null (unless already changed)
+            if ($createdAt->getPatient() === $this) {
+                $createdAt->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Hospilisation[]
+     */
+    public function getHospilisations(): Collection
+    {
+        return $this->hospilisations;
+    }
+
+    public function addHospilisation(Hospilisation $hospilisation): self
+    {
+        if (!$this->hospilisations->contains($hospilisation)) {
+            $this->hospilisations[] = $hospilisation;
+            $hospilisation->setMedecin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHospilisation(Hospilisation $hospilisation): self
+    {
+        if ($this->hospilisations->removeElement($hospilisation)) {
+            // set the owning side to null (unless already changed)
+            if ($hospilisation->getMedecin() === $this) {
+                $hospilisation->setMedecin(null);
+            }
+        }
+
+        return $this;
+    }
+    public function usersPatient(string_$role): array
+    {
+        $entityManager = $this->getEntityManager;
+
+        $query = $entityManager->createQuery(
+            'SELECT p
+            FROM App\Entity\User p
+            WHERE p.roles = :roles
+            ORDER BY p.nom ASC'
+        )->setParameter('roles', $role);
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+    public function __toString(): string
     {
         return $this->email;
     }
 
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
 
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
 }

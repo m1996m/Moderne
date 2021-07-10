@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hospilisation index{% endblock %}
+
+{% block body %}
+    <h1>Hospilisation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>DateAdmission</th>
+                <th>MotifAdmission</th>
+                <th>NomAccompagnant</th>
+                <th>Lien</th>
+                <th>DateSortie</th>
+                <th>Statut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for hospilisation in hospilisations %}
+            <tr>
+                <td>{{ hospilisation.id }}</td>
+                <td>{{ hospilisation.dateAdmission ? hospilisation.dateAdmission|date('Y-m-d') : '' }}</td>
+                <td>{{ hospilisation.motifAdmission }}</td>
+                <td>{{ hospilisation.nomAccompagnant }}</td>
+                <td>{{ hospilisation.lien }}</td>
+                <td>{{ hospilisation.dateSortie ? hospilisation.dateSortie|date('Y-m-d') : '' }}</td>
+                <td>{{ hospilisation.statut }}</td>
+                <td>
+                    <a href="{{ path('hospilisation_show', {'id': hospilisation.id}) }}">show</a>
+                    <a href="{{ path('hospilisation_edit', {'id': hospilisation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('hospilisation_new') }}">Create new</a>
+{% endblock %}

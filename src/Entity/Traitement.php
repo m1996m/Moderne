@@ -6,6 +6,8 @@ use App\Repository\TraitementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Mapping\Annotation\Slug;
 
 /**
  * @ORM\Entity(repositoryClass=TraitementRepository::class)
@@ -32,7 +34,7 @@ class Traitement
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeTraitement::class, inversedBy="traitements")
-     */
+    */
     private $type;
 
     /**
@@ -44,16 +46,6 @@ class Traitement
      * @ORM\Column(type="date")
      */
     private $fin;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Facture::class, mappedBy="traitement")
-     */
-    private $factures;
-
-    public function __construct()
-    {
-        $this->factures = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -120,33 +112,4 @@ class Traitement
         return $this;
     }
 
-    /**
-     * @return Collection|Facture[]
-     */
-    public function getFactures(): Collection
-    {
-        return $this->factures;
-    }
-
-    public function addFacture(Facture $facture): self
-    {
-        if (!$this->factures->contains($facture)) {
-            $this->factures[] = $facture;
-            $facture->setTraitement($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFacture(Facture $facture): self
-    {
-        if ($this->factures->removeElement($facture)) {
-            // set the owning side to null (unless already changed)
-            if ($facture->getTraitement() === $this) {
-                $facture->setTraitement(null);
-            }
-        }
-
-        return $this;
-    }
 }

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New TypeTraitement{% endblock %}
+
+{% block body %}
+    <h1>Create new TypeTraitement</h1>
+
+    {{ include('type_traitement/_form.html.twig') }}
+
+    <a href="{{ path('type_traitement_index') }}">back to list</a>
+{% endblock %}

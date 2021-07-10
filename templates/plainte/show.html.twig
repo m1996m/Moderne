@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Plainte{% endblock %}
+
+{% block body %}
+    <h1 style="text-align:center">Plainte</h1>
+    <div class="container">
+        <div clss="col-md-6">
+            <div class="card">
+                 <div class="row">
+                    <div class="col-md-6">Designation: {{plainte.designation}}</div>
+                    <div class="col-md-6">Ajouter le: {{ plainte.date ? plainte.date|date('Y-m-d') : '' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><a style="color:white" href="{{ path('plainte_index') }}">Liste</a></div>
+                    <div class="col-md-4"><a style="color:white" href="{{ path('plainte_edit', {'id': plainte.id}) }}">Editer</a></div>
+                    <div class="col-md-4"><a style="color:white" href="plainte/_delete_form.html.twig">Supprimer</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

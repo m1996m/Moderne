@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Plainte index{% endblock %}
+
+{% block body %}
+    <h1>Plainte index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Designation</th>
+                <th>Date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for plainte in plaintes %}
+            <tr>
+                <td>{{ plainte.id }}</td>
+                <td>{{ plainte.designation }}</td>
+                <td>{{ plainte.date ? plainte.date|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('plainte_show', {'id': plainte.id}) }}">show</a>
+                    <a href="{{ path('plainte_edit', {'id': plainte.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('plainte_new') }}">Create new</a>
+{% endblock %}

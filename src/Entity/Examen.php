@@ -26,18 +26,39 @@ class Examen
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Examen::class, inversedBy="examens")
-     */
-    private $resultat;
-
-    /**
      * @ORM\OneToMany(targetEntity=Examen::class, mappedBy="resultat")
      */
     private $examens;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="resultat")
+     */
+    private $rendezVouses;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $statut;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Consultation::class, inversedBy="examens")
+     */
+    private $consultation;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
     public function __construct()
     {
         $this->examens = new ArrayCollection();
+        $this->rendezVouses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -57,45 +78,82 @@ class Examen
         return $this;
     }
 
-    public function getResultat(): ?self
+    public function getDescription(): ?string
     {
-        return $this->resultat;
+        return $this->description;
     }
 
-    public function setResultat(?self $resultat): self
+    public function setDescription(?string $description): self
     {
-        $this->resultat = $resultat;
+        $this->description = $description;
 
         return $this;
     }
 
     /**
-     * @return Collection|self[]
+     * @return Collection|RendezVous[]
      */
-    public function getExamens(): Collection
+    public function getRendezVouses(): Collection
     {
-        return $this->examens;
+        return $this->rendezVouses;
     }
 
-    public function addExamen(self $examen): self
+    public function addRendezVouse(RendezVous $rendezVouse): self
     {
-        if (!$this->examens->contains($examen)) {
-            $this->examens[] = $examen;
-            $examen->setResultat($this);
+        if (!$this->rendezVouses->contains($rendezVouse)) {
+            $this->rendezVouses[] = $rendezVouse;
+            $rendezVouse->setResultat($this);
         }
 
         return $this;
     }
 
-    public function removeExamen(self $examen): self
+    public function removeRendezVouse(RendezVous $rendezVouse): self
     {
-        if ($this->examens->removeElement($examen)) {
+        if ($this->rendezVouses->removeElement($rendezVouse)) {
             // set the owning side to null (unless already changed)
-            if ($examen->getResultat() === $this) {
-                $examen->setResultat(null);
+            if ($rendezVouse->getResultat() === $this) {
+                $rendezVouse->setResultat(null);
             }
         }
 
         return $this;
     }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): self
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getConsultation(): ?Consultation
+    {
+        return $this->consultation;
+    }
+
+    public function setConsultation(?Consultation $consultation): self
+    {
+        $this->consultation = $consultation;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
 }

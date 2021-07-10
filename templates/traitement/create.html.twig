@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}ajout traitement{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-md-10"> <h1 style="text-align:center;">Ajout Traitement</h1></div>
+        <div class="col-md-offset-1 col-md-10 col-md-offset-1">
+            <div class="card">
+                {{ form_start(form) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.patient, { label: 'Patient',placeholder:'patient'}) }}
+                            {{ form_row(form.type, { label: 'Type'}) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.debut, {label:'Date de debut'}) }}
+                            {{ form_row(form.fin, {label:'Date de fin'}) }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Consultation index{% endblock %}
+
+{% block body %}
+ <h1 style="text-align:center">Mes consultations</h1>
+    <div class="container">
+        <h2 style="text-align:rigtht"><a style="color:white" href="{{path('consultation_new')}}">Nouveau</a></h2>
+        <div class="row">
+            {% for consultation in consultations %}        
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-md-3" style="webkit-border-radius : 75px;border: none;margin:5%; padding:5%">
+                                {% if consultation.patient.image  %}
+                                    <img src="{{consultation.patient.image }}" alt="Une image" max-width : 75px high="10%" width="60" >
+                                {% else %}
+                                    <img src="avatar.jpg" alt="" max-width : 75px high="10%" width="60" >
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6" style="webkit-border-radius : 75px;border: none;margin:5%; padding:5%">
+                                <h4>{{consultation.patient.nom }}<div style="text-transform: uppercase;">{{consultation.patient.prenom }}</div></h4>
+                            </div>
+                        </div>
+                        <div style="text-align:rigtht"><a style="color:white" href="{{path('consultation_show', {id: consultation.id})}}">Detail</a></div>
+                    </div>
+                </div>
+                <br><br>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

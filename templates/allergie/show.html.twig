@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Allergie{% endblock %}
+
+{% block body %}
+    <h1 style="text-align:center">Allergie</h1>
+    <div class="container">
+        <div clss="col-md-6">
+            <div class="card">
+                 <div class="row">
+                    <div class="col-md-6">Designation: {{allergie.designation}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><a style="color:white" href="{{ path('allergie_index') }}">Liste</a></div>
+                    <div class="col-md-4"><a style="color:white" href="{{ path('allergie_edit', {'id': allergie.id}) }}">Editer</a></div>
+                    <div class="col-md-4"><a style="color:white" href="allergie/_delete_form.html.twig">Supprimer</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

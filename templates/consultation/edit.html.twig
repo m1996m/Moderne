@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Consultation{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-md-10"> <h1 style="text-align:center;">Editer Consultation</h1></div>
+        <div class="col-md-offset-1 col-md-10 col-md-offset-1">
+            <div class="card">
+                {{ form_start(form) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.patient, { label: 'Patient',placeholder:'patient'}) }}
+                            {{ form_row(form.fumeur) }}
+                            {{ form_row(form.alcoolique) }}
+
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.diabetique) }}
+                            {{ form_row(form.autre) }}
+                            {{ form_row(form.date) }}
+
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

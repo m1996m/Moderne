@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RendezVous index{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
+    <style>
+    #calendar-holder{
+        width:80%;
+        margin:auto;
+    }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    <h1>RendezVous index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rendez_vou in rendez_vouses %}
+            <tr>
+                <td>{{ rendez_vou.id }}</td>
+                <td>{{ rendez_vou.date ? rendez_vou.date|date('Y-m-d') : '' }}</td>
+                <td>{{ rendez_vou.statut }}</td>
+                <td>
+                    <a href="{{ path('rendez_vous_show', {'id': rendez_vou.id}) }}">show</a>
+                    <a href="{{ path('rendez_vous_edit', {'id': rendez_vou.id}) }}">edit</a>
+                </td>
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+           
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('rendez_vous_new') }}">Create new</a>
+{% endblock %}
+

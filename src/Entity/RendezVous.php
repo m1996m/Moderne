@@ -43,6 +43,11 @@ class RendezVous
      */
     private $service;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Examen::class, inversedBy="rendezVouses")
+     */
+    private $resultat;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +109,18 @@ class RendezVous
     public function setService(?Service $service): self
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    public function getResultat(): ?Examen
+    {
+        return $this->resultat;
+    }
+
+    public function setResultat(?Examen $resultat): self
+    {
+        $this->resultat = $resultat;
 
         return $this;
     }

@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Consultation{% endblock %}
+
+{% block body %}
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+               <h6> <a style="color:white" href="{{ path('consultation_index') }}">Mes consultation</a></h6>
+            </div>
+            <div class="col-lg-3">
+                <h6><a style="color:white" href="{{ path('consultation_edit', {'id': consultation.id}) }}">Editer</a></h6>
+            </div>
+            <div class="col-lg-3">
+                <h6><a style="color:white" href="'consultation/_delete_form.html.twig'">Supprimer</a></button>
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="card">
+                <br>
+                <h3 style="text-align:center">Consultation de {{consultation.patient.nom}} {{consultation.patient.prenom}}<h3>
+                <br>
+                <div class"container" >
+                <table class="table" style="padding:5%; background-color:white;color:black"  border=6>
+                    <div class="card">
+                       <tr>
+                            <tbody>
+                                <tr>
+                                    <th>Fumeur</th>
+                                    <td>{{ consultation.fumeur }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Alcoolique</th>
+                                    <td>{{ consultation.alcoolique }}</td>
+                                </tr> 
+                                <tr>
+                                    <th>Diabetique</th>
+                                    <td>{{ consultation.diabetique }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Autre</th>
+                                    <td>{{ consultation.autre }}</td>
+                                </tr>
+                        </tbody> 
+                       </tr>
+                    </div>
+                </table> 
+                <br>
+                <h3 style="text-align:center">Plaintes</h3>
+                    <table class="table table-bordered table-dark">
+                        <thead>
+                            <tr>
+                            <th scope="col">Designation</th>
+                            <th scope="col">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for plainte in consultation.plaintes  %}
+                                <tr>
+                                    {% if plainte %}
+                                        <th scope="row">{{plainte.designation}}</th>
+                                         <td><div style="text-align:rigtht"><a style="color:white" href="{{path('plainte_show', {id: plainte.id})}}">Detail</a></div></td>
+                                    {% else %}
+                                        <p>Aucun plainte</p>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                <h3 style="text-align:center;" >Alleergies</h3>
+                    <table class="table table-bordered table-dark">
+                        <thead>
+                            <tr>
+                            <th scope="col">Designation</th>
+                            <th scope="col">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for allergie in consultation.allergies  %}
+                                <tr>
+                                    {% if allergie %}
+                                        <th scope="row">{{allergie.designation}}</th>
+                                         <td><div style="text-align:rigtht"><a style="color:white" href="{{path('allergie_show', {id: allergie.id})}}">Detail</a></div></td>
+                                    {% else %}
+                                        <p>Aucun allergie</p>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                <div class="row">
+                <div class="col-lg-6" style="text-align:left">
+                   <h5 class="">Consulte par Dr: {{user.nom}} {{user.prenom}}</h5>
+                </div>
+                <div class="col-lg-6" style="text-align:right">
+                    <h5 class="">Fait le: {{ consultation.date ? consultation.date|date('Y-m-d') : '' }}</h5>  
+                </div>
+                </div> 
+                </div>
+            </div>
+        </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-3">
+               <h6> <a style="color:white" href="{{path('plainte_show', {id: consultation.id}) }}">Plaintes</a></h6>
+            </div>
+            <div class="col-lg-3">
+                <h6><a style="color:white" href="{{ path('allergie_show', {'id': consultation.id}) }}">Allergie</a></h6>
+            </div>
+            <div class="col-lg-3">
+                <h6><a style="color:white" href="{{path('resultat_show', {'id': consultation.id})}}">Resultat</a></button>
+            </div>
+        </div>
+    </div>
+  
+{% endblock %}

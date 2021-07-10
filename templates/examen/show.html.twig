@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Examen{% endblock %}
+
+{% block body %}
+    <h1 style="text-align:center">Detail Examen</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-6">Type: {{examen.type}}</div>
+                        <div class="col-md-6">Date: {{examen.description}}</div>
+                    </div>
+                    <br>
+                    <br>
+                    <div style="text-align:right">Fait le: {{examen.createdAt|date('d-m-Y')}}</div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4"><a style="color:white" href="{{ path('examen_index') }}">Liste</a></div>
+                        <div class="col-md-4"><a style="color:white" href="{{ path('examen_edit', {'id': examen.id}) }}">Editer</a></div>
+                        <div class="col-md-3 btn btn-danger"><a style="color:white" href="examen/_delete_form.html.twig">Supprimer</a></div>
+                    </div>
+
+                </div >
+            </div>
+        </div>
+    </div>
+{% endblock %}

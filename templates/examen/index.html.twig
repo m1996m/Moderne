@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Examen index{% endblock %}
+
+{% block body %}
+    <h1 style="text-align:center">Mes examens</h1>
+    <div class="container">
+         <div style="color:white"><a style="color:white" href="{{ path('examen_new') }}">Nouveau</a></div>
+        <div class="row">
+           
+            {% for examen in examens  %}
+                <div class="col-md-4" >
+                    <div class="card">
+                        <div class="">
+                            {% if examen %}
+                                <div class="col-md-4">
+                                    {{examen.type}}
+                                </div>
+                                    <div class="col-md-8">
+                                        {{examen.description}}
+                                    </div>
+                                <div class="col-md-12" style="text-align:right"><a style="color:white" href="{{path('examen_show',{id:examen.id})}}">Detail</a></div>
+                            {% else %}
+                                <h5>Aucun examen</h5>
+                            {% endif %}
+                        </div>
+                    </div >
+                </div >
+                
+            {% endfor %}
+        </div >
+    </div>
+{% endblock %}
