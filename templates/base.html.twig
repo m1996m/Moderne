@@ -3,62 +3,126 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/darkly/bootstrap.min.css" integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN" crossorigin="anonymous">
-       
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/darkly/bootstrap.min.css" integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN" crossorigin="anonymous">
         {% block stylesheets %}
             {#{{ encore_entry_link_tags('app') }}#}
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
         {% endblock %}
 
         {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
+             <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         {% endblock %}
     </head>
     <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <a class="navbar-brand" href="{{path('home')}}">MMD</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <div class="collapse navbar-collapse" id="navbarColor01">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Home
-            <span class="visually-hidden">(current)</span>
-          </a>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+        <li class="nav-item active">
+          <a class="nav-link" href="{{path('home')}}">{% trans %}Accueil{% endtrans %}<span class="sr-only">(current)</span></a>
         </li>
+        {% if is_granted('ROLE_ADMIN') %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('consultation_new')}}">{% trans %}Consultation{% endtrans %} </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{path('new_traitement')}}"> {% trans %}Traitement{% endtrans %}</a>
+          </li>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{path('priserendez',{id:app.user.id})}}">{% trans %}Rendez-vous{% endtrans %} </a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{path('prendrerendez')}}">{% trans %}Rendez-vous{% endtrans %} </a>
+            </li>
+        {% endif %}
         <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
+          <a class="nav-link" href="{{path('app_register')}}">{% trans %}Inscription{% endtrans %} </a>
         </li>
+      {% endif %}
+      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
+          <a class="nav-link" href="{{path('app_logout')}}" >{% trans %}Deconnexion{% endtrans %} </a>
         </li>
+      {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+          <a class="nav-link" href="{{path('app_login')}}"> {% trans %}Connexion{% endtrans %}</a>
         </li>
+      {% endif %}
+      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             {% trans %}Profile{% endtrans %}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{path('user_show', {slug: app.user.slug })}}"> {% trans %}Mon profile{% endtrans %}</a>
+            <a class="dropdown-item" href="{{path('mesPatient',{id: app.user.id})}}"> {% trans %}Mes patients{% endtrans %}</a>
+            <a class="dropdown-item" href="{{path('rendezvous_rdv',{id: app.user.id})}}"> {% trans %}Mes rendez-vous{% endtrans %}</a>
+            <a class="dropdown-item" href="{{path('mesconsultation',{slug: app.user.slug})}}"> {% trans %}Mes consultations{% endtrans %}</a>
+            <a class="dropdown-item" href="{{path('mesOrdonnance',{id: app.user.id})}}"> {% trans %}Mes ordonnances{% endtrans %}</a>
+            <a class="dropdown-item" href="{{path('mesexamens',{id:app.user.id})}}"> {% trans %}Mes examens{% endtrans %}</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+            <a class="dropdown-item" href="{{path('app_logout')}}"> {% trans %}Deconnexion{% endtrans %}</a>
           </div>
         </li>
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-sm-2" type="text" placeholder="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-      </form>
-    </div>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% trans %}Theme{% endtrans %}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{path('user_show', {slug: app.user.slug })}}">{% trans %}Bleu{% endtrans %}</a>
+            <a class="dropdown-item" href="{{path('mesPatient',{id: app.user.id})}}"> {% trans %}Noire{% endtrans %}</a>
+            <a class="dropdown-item" href="{{path('mesconsultation',{slug: app.user.slug})}}">{% trans %}Vert{% endtrans %}</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% trans %}Langue{% endtrans %}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% for locale in locales %}
+              {% if locale != app.request.locale %}
+              
+                {% if app.request.locale == "en" %}
+                  <a class="dropdown-item" href="{{path('langue', {locale:locale })}}"> {% trans %}Français{% endtrans %}</a>
+                {% else %}
+                  <a class="dropdown-item" href="{{path('langue', {locale:locale })}}"> {% trans %}Anglais{% endtrans %}</a>
+                {% endif %}
+              {% endif %}
+                
+               
+            {% endfor %}
+          </div>
+        </li>
+      {% endif %}
+
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{% trans %}Recherche{% endtrans %}</button>
+    </form>
   </div>
 </nav>
         {% block body %}
           <div id="calendar-holder"></div>
-        
         {% endblock %}
-        
     </body>
 </html>

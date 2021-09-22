@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Examen;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -11,6 +12,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Examen|null findOneBy(array $criteria, array $orderBy = null)
  * @method Examen[]    findAll()
  * @method Examen[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Examen|null mesExamensPatient($patient)
+ * @method Examen|null mesexamenMedecin($medecin)
  */
 class ExamenRepository extends ServiceEntityRepository
 {
@@ -47,4 +50,39 @@ class ExamenRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function mesExamenPatient(User $patient): array
+    {
+        // automatically knows to select Products
+        // the "p" is an alias you'll use in the rest of the query
+        $qb = $this->createQueryBuilder('p')
+            ->join('p.consultation','c')
+            ->where('c.patient = :patient')
+            ->setParameter('patient', $patient)
+            ->orderBy('p.id', 'DESC');
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+
+        // to get just one result:
+        // $product = $query->setMaxResults(1)->getOneOrNullResult();
+    }
+
+    public function mesexamenMedecin(User $medecin): array
+    {
+        // automatically knows to select Products
+        // the "p" is an alias you'll use in the rest of the query
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.medecin = :medecin')
+            ->setParameter('medecin', $medecin)
+            ->orderBy('p.id', 'DESC');
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+
+        // to get just one result:
+        // $product = $query->setMaxResults(1)->getOneOrNullResult();
+    }
 }

@@ -1,0 +1,26 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}New RendezVous{% endblock %}
+
+{% block body %}
+    <div class="container">
+       
+        <div class="row">
+            <div class="col-md-10">
+                <br>
+                <div class="card">
+                    {% for erreur in erros %}
+                        <div class="alert alert-danger" role="alert">{{ erreur }}</div>
+                    {% endfor %}
+                    <h1 style="text-align:center">Creer RendezVous</h1>
+                    <div class="row" style=" padding-left:16%; margin-top:2%">
+                        <div class="col-md-6">
+                            {{ form_start(form) }}
+                                    {{ form_row(form.date)}}
+                               <button style="text-align:left" type="submit" class="btn btn-primary ">Ajouter</button>
+                            {{ form_end(form) }}
+                        </div>
+                </div>   </div>
+        </div>
+    </div>
+{% endblock %}

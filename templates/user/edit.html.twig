@@ -11,7 +11,7 @@
           <div class="card">
             <h3 style="text-align:center;">Edit user</h3>
             <div class="row">
-                <div class="col-md-6">    
+                <div class="col-md-6">
                     {{form_row(form.nom)}}
                     {{form_row(form.prenom)}}
                     {{form_row(form.tel)}}
@@ -25,7 +25,7 @@
                     {% else %} 
                       {{form_row(form.specialite,{ 'attr': {'hidden': 'hidden-row'},'label_attr': {'hidden':'hidden'} })}}
                       {{form_row(form.service,{ 'attr': {'hidden': 'hidden-row'},'label_attr': {'hidden':'hidden'} })}}   
-                    {% endif %}                 
+                    {% endif %}
                  </div>
              </div>
             <div class="col-md-8 " style="text-align:right">

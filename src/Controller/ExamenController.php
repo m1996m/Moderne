@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/examen")
@@ -20,6 +21,7 @@ class ExamenController extends AbstractController
 {
     /**
      * @Route("/", name="examen_index", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(ExamenRepository $examenRepository): Response
     {
@@ -29,7 +31,22 @@ class ExamenController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/examenPatient_medecin", name="mesexamens", methods={"GET"})
+     */
+    public function mesexamen(ExamenRepository $examenRepository): Response
+    {
+        if($this->isGranted('ROLE_USER'))
+            $examens=$examenRepository->mesExamenPatient($this->getUser());
+        else
+            $examan=$examenRepository->mesexamenMedecin($this->getUser());
+        return $this->render('examen/mesexamen.html.twig', [
+            'examens' => $examens,
+        ]);
+    }
+
+    /**
      * @Route("/new", name="examen_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, SessionInterface $session, ConsultationRepository $repos): Response
     {
@@ -66,6 +83,7 @@ class ExamenController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="examen_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Examen $examan): Response
     {
@@ -86,6 +104,7 @@ class ExamenController extends AbstractController
 
     /**
      * @Route("/{id}", name="examen_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Examen $examan): Response
     {

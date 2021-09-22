@@ -1,11 +1,68 @@
-{% extends 'base.html.twig' %}
+ {% extends 'base.html.twig' %}
 
 {% block title %}New RendezVous{% endblock %}
 
 {% block body %}
-    <h1>Create new RendezVous</h1>
-
-    {{ include('rendez_vous/_form.html.twig') }}
-
-    <a href="{{ path('rendez_vous_index') }}">back to list</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <br>
+                    <div class="row" style=" padding-left:18%; margin-top:3%">
+                        <h3 style="text-align:center;padding-left:20%;">Choississez une heure</h3>
+                        <form method="POST" action="{{path('mesrendez',{id:app.user.id})}}" class="col-md-offset-2 col-md-8 col-md-offset-2"  style="text-align:center">
+                            <table class="table table-bordered" >
+                                <thead>
+                                    <tr>
+                                        <th>MINUTES</th>
+                                        <th>8H</th>
+                                        <th>9H</th>
+                                        <th>10H</th>
+                                        <th>11H</th>
+                                        <th>12H</th>
+                                        <th>13H</th>
+                                        <th>14H</th>
+                                        <th>15H</th>
+                                        <th>16H</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set compteur = 1 %}
+                                    {% set longueur = rdv|length %}
+                                    {% set longueur = longueur/2 %}
+                                    <tr>
+                                        {% if compteur==1 or compteur==0 %}<td>00</td>{% endif %}
+                                        {% for rd in rdv %}
+                                            {% if longueur >= compteur %}
+                                                {% if rd.disponibilite==1 %}
+                                                    <td><input type="radio" name="id" value="{{rd.id}}" /></td>
+                                                {% else %}
+                                                    <td><input disabled type="radio" name="id" value="{{rd.id}}" /></td>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% set compteur = 1+compteur %}
+                                         {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        {% set compteur = 1 %}
+                                        {% for rd in rdv %}
+                                            {% if compteur==longueur+1 %}<td>30</td>{% endif %}
+                                            {% if compteur<=rdv|length and compteur>=longueur+1 %}
+                                                {% if rd.disponibilite==1 %}
+                                                    <td><input type="radio" name="id" value="{{rd.id}}" /></td>
+                                                {% else %}
+                                                    <td><input disabled type="radio" name="id" value="{{rd.id}}" /></td>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% set compteur = 1+compteur %}
+                                        {% endfor %}
+                                    </tr>
+                                </tbody>
+                            <table>
+                            <button name="modifier" style="padding-right:20%" type="submit" class="btn btn-primary ">Ajouter</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

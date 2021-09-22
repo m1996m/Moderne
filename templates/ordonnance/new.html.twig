@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Ordonnance{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-md-10"> <h1 style="text-align:center;">Ajout Ordonnance</h1></div>
+        <div class="col-md-offset-1 col-md-10 col-md-offset-1">
+            <div class="card">
+                {{ form_start(form) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.designation, { label: 'Designation',placeholder:'designation'}) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.type, { label: 'Type',placeholder:'type'}) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary ">Ajouter</button>
+                        </div>
+                        <div class="col-md-3">
+                             <button class="btn btn-danger" style="text-align:right"><a href="{{path('traitement')}}">Retour</a></button>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

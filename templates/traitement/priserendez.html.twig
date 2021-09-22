@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Traitement{% endblock %}
+
+{% block body %}
+ <h1 style="text-align:center">Listes de mes patients</h1>
+    <div class="container">
+        <h2 style="text-align:rigtht"><a href="{{path('new_traitement')}}">Ajout</a></h2>
+        <div class="row">
+            {% for traitement in traitements %}
+                {% if traitement %}
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="row">
+                                    <div class="col-md-3" style="webkit-border-radius : 75px;border: none;margin:5%; padding:5%">
+                                        <img src="{{traitement.patient.image }}" alt="" max-width : 75px high="10%" width="60" >
+                                    </div>
+                                    <div class="col-md-6" style="webkit-border-radius : 75px;border: none;margin:5%; padding:5%">
+                                        <h4>{{traitement.patient.nom }}<div style="text-transform: uppercase;">{{traitement.patient.prenom }}</div></h4>
+                                    </div>
+                                </div>
+                                <div style="text-align:rigtht"><a href="{{path('mesrendez', {id: app.user.id})}}">Choisir</a></div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div><h4>Vous n'avez aucun traitement</h4></div>
+                {% endif %}
+                <br><br>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

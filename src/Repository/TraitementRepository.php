@@ -48,15 +48,13 @@ class TraitementRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function mesConsultation(User $medecin, User $patient): array
+    public function mesPatient(User $medecin): array
     {
         // automatically knows to select Products
         // the "p" is an alias you'll use in the rest of the query
         $qb = $this->createQueryBuilder('p')
             ->where('p.medecin = :medecin')
-            ->andwhere('patient= :patient')
             ->setParameter('medecin', $medecin)
-            ->setParameters(array('medecin'=> $medecin, 'patient' => $patient))
             ->orderBy('p.id', 'ASC');
 
         $query = $qb->getQuery();
@@ -66,4 +64,5 @@ class TraitementRepository extends ServiceEntityRepository
         // to get just one result:
         // $product = $query->setMaxResults(1)->getOneOrNullResult();
     }
+    
 }

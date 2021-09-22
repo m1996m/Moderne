@@ -47,6 +47,16 @@ class Traitement
      */
     private $fin;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ordonnance::class, mappedBy="traitement")
+     */
+    private $ordonnances;
+
+    public function __construct()
+    {
+        $this->ordonnances = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,6 +118,36 @@ class Traitement
     public function setFin(\DateTimeInterface $fin): self
     {
         $this->fin = $fin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ordonnance[]
+     */
+    public function getOrdonnances(): Collection
+    {
+        return $this->ordonnances;
+    }
+
+    public function addOrdonnance(Ordonnance $ordonnance): self
+    {
+        if (!$this->ordonnances->contains($ordonnance)) {
+            $this->ordonnances[] = $ordonnance;
+            $ordonnance->setTraitement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdonnance(Ordonnance $ordonnance): self
+    {
+        if ($this->ordonnances->removeElement($ordonnance)) {
+            // set the owning side to null (unless already changed)
+            if ($ordonnance->getTraitement() === $this) {
+                $ordonnance->setTraitement(null);
+            }
+        }
 
         return $this;
     }

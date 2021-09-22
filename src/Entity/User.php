@@ -29,8 +29,9 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
-
     public $confirmation;
+    public $ancien;
+    public $nouveau;
 
     /**
      * @ORM\Column(type="json")
@@ -45,17 +46,17 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=true)
+     * @ORM\Column(type="string", length=255,nullable=false)
      */
     private $tel;
 
@@ -227,6 +228,14 @@ class User implements UserInterface
     public function getPrenom(): ?string
     {
         return $this->prenom;
+    }
+    public function getAncien(): ?string
+    {
+        return $this->ancien;
+    }
+    public function getNouveau(): ?string
+    {
+        return $this->nouveau;
     }
 
     public function setPrenom(string $prenom): self

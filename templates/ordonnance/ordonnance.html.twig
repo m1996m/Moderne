@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ordonnance{% endblock %}
+
+{% block body %}
+    <br>
+    <div class="container" style="padding-left:15%">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card" style="padding-left:5%">
+                    <h3 style="text-align:center">Ordonnance</h3>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 style="">Centre hopitalier MAD</h5>
+                        </div>
+                        <div class="" style="text-align:right"><h5 style="text-align:right"> Republique de France</h5></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 style="">95 rue de la patouillerie</h5>
+                        </div>
+                        <div class="" ><h5 style="text-align:right">travail-egalité-fraternité</h5></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 style="">44700 ORVAULT(ORVAULT)</h5>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-5"><h4>Nom:   {{user.nom}}</h4></div>
+                        <div class="col-md-7"><h4>Prenom:    {{user.prenom}}</h4></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 style="">DESIGNATION</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 style="">TYPE</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {% for ordonnance in ordonnances %}
+                            {% if ordonnance %}
+                                <div class="col-md-6">{{ordonnance.designation}} </div>
+                                <div class="col-md-6">{{ordonnance.type}} </div>
+                            {% else %}
+                                <div><h4>Aucun produit prescrit</h4></div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <br>
+                    <div style="text-align:left">Dr  {{user.nom}}  {{user.prenom}}</div>
+                    <br>
+                    <div style="text-align:right">Fait le: </div>
+                    <br>
+                </div >
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -71,11 +71,17 @@ class Consultation
      */
     private $examens;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ordonnance::class, mappedBy="consultation")
+     */
+    private $traitement;
+
     public function __construct()
     {
         $this->plaintes = new ArrayCollection();
         $this->allergies = new ArrayCollection();
         $this->examens = new ArrayCollection();
+        $this->traitement = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -255,6 +261,36 @@ class Consultation
             // set the owning side to null (unless already changed)
             if ($examen->getConsultation() === $this) {
                 $examen->setConsultation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ordonnance[]
+     */
+    public function getTraitement(): Collection
+    {
+        return $this->traitement;
+    }
+
+    public function addTraitement(Ordonnance $traitement): self
+    {
+        if (!$this->traitement->contains($traitement)) {
+            $this->traitement[] = $traitement;
+            $traitement->setConsultation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTraitement(Ordonnance $traitement): self
+    {
+        if ($this->traitement->removeElement($traitement)) {
+            // set the owning side to null (unless already changed)
+            if ($traitement->getConsultation() === $this) {
+                $traitement->setConsultation(null);
             }
         }
 

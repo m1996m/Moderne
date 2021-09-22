@@ -21,6 +21,7 @@ class RendezVous
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rendezVouses")
      */
     private $patient;
+    private $heures;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rendezVouses")
@@ -47,6 +48,16 @@ class RendezVous
      * @ORM\ManyToOne(targetEntity=Examen::class, inversedBy="rendezVouses")
      */
     private $resultat;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $heure;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $disponibilite;
 
     public function getId(): ?int
     {
@@ -121,6 +132,35 @@ class RendezVous
     public function setResultat(?Examen $resultat): self
     {
         $this->resultat = $resultat;
+
+        return $this;
+    }
+
+    public function getHeure(): ?string
+    {
+        return $this->heure;
+    }
+
+    public function getHeures(): ?string
+    {
+        return $this->heures;
+    }
+
+    public function setHeure(string $heure): self
+    {
+        $this->heure = $heure;
+
+        return $this;
+    }
+
+    public function getDisponibilite(): ?int
+    {
+        return $this->disponibilite;
+    }
+
+    public function setDisponibilite(int $disponibilite): self
+    {
+        $this->disponibilite = $disponibilite;
 
         return $this;
     }

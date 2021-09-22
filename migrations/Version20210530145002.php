@@ -24,7 +24,6 @@ final class Version20210530145002 extends AbstractMigration
         $this->addSql('CREATE TABLE consultation (id INT AUTO_INCREMENT NOT NULL, patient_id INT NOT NULL, medecin_id INT DEFAULT NULL, date DATE NOT NULL, statut VARCHAR(255) NOT NULL, INDEX IDX_964685A66B899279 (patient_id), INDEX IDX_964685A64F31A84 (medecin_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE created_at (id INT AUTO_INCREMENT NOT NULL, patient_id INT NOT NULL, medecin_id INT DEFAULT NULL, produit VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, created_at DATETIME NOT NULL, INDEX IDX_8B8E84286B899279 (patient_id), INDEX IDX_8B8E84284F31A84 (medecin_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE examen (id INT AUTO_INCREMENT NOT NULL, type_id INT NOT NULL, resultat_id INT DEFAULT NULL, INDEX IDX_514C8FECC54C8C93 (type_id), INDEX IDX_514C8FECD233E95C (resultat_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE facture (id INT AUTO_INCREMENT NOT NULL, traitement_id INT DEFAULT NULL, created_at DATETIME NOT NULL, total DOUBLE PRECISION NOT NULL, INDEX IDX_FE866410DDA344B6 (traitement_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE hospilisation (id INT AUTO_INCREMENT NOT NULL, medecin_id INT DEFAULT NULL, patient_id INT DEFAULT NULL, motif_sortie_id INT DEFAULT NULL, chambre_id INT DEFAULT NULL, date_admission DATE NOT NULL, motif_admission VARCHAR(255) NOT NULL, nom_accompagnant VARCHAR(255) DEFAULT NULL, lien VARCHAR(255) DEFAULT NULL, date_sortie DATE NOT NULL, statut VARCHAR(255) NOT NULL, INDEX IDX_3BB15B5E4F31A84 (medecin_id), INDEX IDX_3BB15B5E6B899279 (patient_id), INDEX IDX_3BB15B5EA619031F (motif_sortie_id), INDEX IDX_3BB15B5E9B177F54 (chambre_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE medecin (id INT AUTO_INCREMENT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE motif (id INT AUTO_INCREMENT NOT NULL, designation VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -42,7 +41,6 @@ final class Version20210530145002 extends AbstractMigration
         $this->addSql('ALTER TABLE created_at ADD CONSTRAINT FK_8B8E84284F31A84 FOREIGN KEY (medecin_id) REFERENCES `user` (id)');
         $this->addSql('ALTER TABLE examen ADD CONSTRAINT FK_514C8FECC54C8C93 FOREIGN KEY (type_id) REFERENCES type_examen (id)');
         $this->addSql('ALTER TABLE examen ADD CONSTRAINT FK_514C8FECD233E95C FOREIGN KEY (resultat_id) REFERENCES examen (id)');
-        $this->addSql('ALTER TABLE facture ADD CONSTRAINT FK_FE866410DDA344B6 FOREIGN KEY (traitement_id) REFERENCES traitement (id)');
         $this->addSql('ALTER TABLE hospilisation ADD CONSTRAINT FK_3BB15B5E4F31A84 FOREIGN KEY (medecin_id) REFERENCES `user` (id)');
         $this->addSql('ALTER TABLE hospilisation ADD CONSTRAINT FK_3BB15B5E6B899279 FOREIGN KEY (patient_id) REFERENCES `user` (id)');
         $this->addSql('ALTER TABLE hospilisation ADD CONSTRAINT FK_3BB15B5EA619031F FOREIGN KEY (motif_sortie_id) REFERENCES motif (id)');
@@ -63,7 +61,6 @@ final class Version20210530145002 extends AbstractMigration
         $this->addSql('ALTER TABLE examen DROP FOREIGN KEY FK_514C8FECD233E95C');
         $this->addSql('ALTER TABLE hospilisation DROP FOREIGN KEY FK_3BB15B5EA619031F');
         $this->addSql('ALTER TABLE rendez_vous DROP FOREIGN KEY FK_65E8AA0AED5CA9E6');
-        $this->addSql('ALTER TABLE facture DROP FOREIGN KEY FK_FE866410DDA344B6');
         $this->addSql('ALTER TABLE examen DROP FOREIGN KEY FK_514C8FECC54C8C93');
         $this->addSql('ALTER TABLE traitement DROP FOREIGN KEY FK_2A356D27C54C8C93');
         $this->addSql('CREATE TABLE essai (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, nom VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, INDEX IDX_F0455541A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
@@ -72,7 +69,6 @@ final class Version20210530145002 extends AbstractMigration
         $this->addSql('DROP TABLE consultation');
         $this->addSql('DROP TABLE created_at');
         $this->addSql('DROP TABLE examen');
-        $this->addSql('DROP TABLE facture');
         $this->addSql('DROP TABLE hospilisation');
         $this->addSql('DROP TABLE medecin');
         $this->addSql('DROP TABLE motif');

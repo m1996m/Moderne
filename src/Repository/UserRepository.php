@@ -85,7 +85,24 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     //Les patients d'un docteur partieculier
 
-    public function mesPatients(User $medecin, User $patient): array
+    public function mesPatients(User $slug): array
+    {
+        // automatically knows to select Products
+        // the "p" is an alias you'll use in the rest of the query
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+           'SELECT u.nom,u.prenom
+            FROM App\Entity\User u JOIN App\Entity\traitement t WITH t.patient=u.id
+            WHERE u.slug = :slug
+            ORDER BY u.id ASC'
+        )->setParameter('slug', $slug);
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+
+    public function RecherchePatients(User $medecin, User $patient): array
     {
         // automatically knows to select Products
         // the "p" is an alias you'll use in the rest of the query
@@ -94,6 +111,24 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->andwhere('patient= :patient')
             ->setParameter('medecin', $medecin)
             ->setParameters(array('medecin'=> $medecin, 'patient' => $patient))
+            ->orderBy('p.id', 'ASC');
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+
+        // to get just one result:
+        // $product = $query->setMaxResults(1)->getOneOrNullResult();
+    }
+    public function peronnels(): array
+    {
+        // automatically knows to select Products
+        // the "p" is an alias you'll use in the rest of the query
+        $qb = $this->createQueryBuilder('p');
+        $qb
+        ->where($qb->expr()->andx(
+            $qb->expr()->isNotNull('p.specialite')
+        ))
             ->orderBy('p.id', 'ASC');
 
         $query = $qb->getQuery();

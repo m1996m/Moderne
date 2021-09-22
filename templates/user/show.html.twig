@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}show{% endblock %}
+
+{% block body %}
+<h3 style="text-align:center">A propos de vous  </h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10" style="position:center">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-4" style="webkit-border-radius : 75px;border: none;margin:5%; padding:5%">
+                    {% if user.image  %}
+                        <img src="{{user.image}}" alt="Une image" max-width : 75px high="10%" width="60" >
+                    {% else %}
+                        <img src="avatar.jpg" alt="" max-width : 75px high="10%" width="60" >
+                    {% endif %}
+                </div>
+            </div>
+            <div class=" row">
+                <div class="col-md-6" style="text-align:left; padding-left:5%">
+                    <h4>Nom:  {{user.nom }}</h4>
+                    <h4>Prenom:  {{user.prenom }}</h4>
+                    <h4>Date de naissance:  {{user.adresse }}</h4>
+                </div>
+                <div class="col-md-6" style="text-align:left; padding-left:5%">
+                    <h4>Tel:  {{user.tel }}</h4>
+                    <h4>Adresse:  {{user.adresse }}</h4>
+                    <h4>specialite:  {{user.specialite }}</h4>
+                </div>
+                <br> <br>
+                <div class="col-md-3">
+                        <div ><a class="btn btn-primary" href="{{path('nouveau', {slug: user.slug})}}">Modifier mot de passe</a></div>
+                </div>
+                <div class="col-md-3">
+                    <div ><a class="btn btn-primary" href="{{path('user_edit', {slug: user.slug})}}">Editer</a></div>
+                </div>
+                <div class="col-md-3">
+                    <div><a class="btn btn-primary" href="{{path('app_test_upload', {slug: user.slug})}}">Changer de profile</a></div>
+                </div>
+                <br><br>
+                <div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
